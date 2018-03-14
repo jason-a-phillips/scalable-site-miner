@@ -1,0 +1,17 @@
+
+
+# Docker build command
+docker build -t db-container:1 .
+
+# Docker run command
+docker run -p 5432:5432 --name db-container -d db-container:1
+
+# Together
+docker build -t db-container:1 . &&\
+docker run -p 5432:5432 --name db-container -d db-container:1
+
+# Destroy container
+docker rm db-container &&\
+docker rmi db-container:1 &&\
+docker rmi $(docker images | grep '<none>' | awk '{print $3}') --force
+
