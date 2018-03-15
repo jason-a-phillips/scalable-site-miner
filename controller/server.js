@@ -5,7 +5,6 @@ const Controller = require('./modules/controller');
 const Consts = require('./utils/constants');
 
 global.Constants = Consts;
-global.ActiveFinders = [];
 
 console.log('Controller starting up!');
 

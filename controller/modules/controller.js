@@ -8,32 +8,21 @@ let frRegistered;
 let frOperational;
 let frStillUpdating;
 
+
 function runFinderCheck() {
 
   frRegistered = [];
   frOperational = [];
   frStillUpdating = [];
 
-  let shouldRebalance = true; // rebalance anyway
+  let shouldRebalance = false;
 
   return Pg.getLastFinderCheckins()
     .then(rows => {
-
-      let findersNotCheckingIn = [];
-
-      rows.map(row => {
-        if (Moment(row.maxcheckintime).utc().format() < Moment.utc().subtract(5, 'minutes').format()) {
-          // it hasn't checked in
-          findersNotCheckingIn.push(row);
-        }
-      });
-
-      if (findersNotCheckingIn.length > 0) {
-        shouldRebalance = true;
-      }
-      return findersNotCheckingIn;
+      return rows.filter(row => Moment(row.maxcheckintime).utc().format() < Moment.utc().subtract(5, 'minutes').format());
     })
-    .then((finders) => {
+    .then(finders => {
+      shouldRebalance = !!finders.length;
       // Disable finders not checking in
       return Promise.map(finders, finder => {
         console.log('>>> Deactivating, didnt check in', finder.uuid);
@@ -46,10 +35,7 @@ function runFinderCheck() {
         .then(sources => {
           return Pg.getSourceToFinders()
             .then(sourcetofinders => {
-              if (sourcetofinders.length !== sources.length) {
-                console.log('>>> Assigned configs and config count were different; will rebalance.');
-                shouldRebalance = true;
-              }
+              shouldRebalance = (sourcetofinders.length !== sources.length) ? true : shouldRebalance;
               return Promise.resolve();
             })
         });
@@ -60,7 +46,7 @@ function runFinderCheck() {
     })
     .then(rows => {
 
-      if (rows.length === 0) {
+      if (!rows.length) {
         console.log('>>> No active finders.');
         return Promise.resolve();
       }
@@ -91,10 +77,10 @@ function runFinderCheck() {
     })
     .then(() => {
       // Apportion finders if necessary
+      return apportionFinders(shouldRebalance);
       let finders = frOperational.concat(frRegistered);
 
-      if (shouldRebalance && finders.length > 0) {
-        let findersLength = finders.length;
+      if (shouldRebalance && finders.length) {
         let numerator = finders.length - 1;
 
         return Pg.deleteSourcetofinder()
@@ -104,8 +90,8 @@ function runFinderCheck() {
           .then(sources => {
             return Promise.map(sources, source => {
               numerator++;
-              // console.log('>>> Apportioning source, finder:', [source.source, finders[numerator % findersLength].uuid]);
-              return Pg.insertSourcetofinder(finders[numerator % findersLength].id, source.id);
+              // console.log('>>> Apportioning source, finder:', [source.source, finders[numerator % finders.length].uuid]);
+              return Pg.insertSourcetofinder(finders[numerator % finders.length].id, source.id);
             });
           })
           .then(() => {
