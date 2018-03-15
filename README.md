@@ -30,6 +30,7 @@ The application right now is a tightly-coupled cluster, due to the relationship 
 The Node.js services are designed to maximize Node's event-loop model and asynchronous "next tick" behavior. HTTP and database requests are always wrapped in Promises, batched and throttled using concurrency limits. As work grows, adding more workers should be a fairly painless task, until the database becomes the bottleneck.
 
 # To-do's
-1. Add features to clean up stale, useless data like disabled worker records.
-2. Add code to auto-grow worker services from within the Node.js controller itself.
-3. Containerize these services within Docker.
+1. Break up long large functions into smaller ones
+2. Add features to clean up stale, useless data like disabled worker records.
+3. Add code to auto-grow worker services from within the Node.js controller itself.
+4. Containerize these services within Docker.
