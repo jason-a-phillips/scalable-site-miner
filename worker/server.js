@@ -2,7 +2,6 @@
 
 const Schedule = require('node-schedule');
 const Uuid = require('uuid/v4');
-const Consts = require('./utils/constants');
 const Monitor = require('./utils/monitor');
 
 // Uncomment for developing a new template, otherwise comment out
@@ -10,11 +9,11 @@ const Monitor = require('./utils/monitor');
 // Tester.find();
 
 // Uncomment to run the finder service
-global.UniqueId = Uuid(); // create a unique ID for this instance
-console.log('>>> Finder ' + global.UniqueId + ' reporting for duty!!!');
-global.Constants = Consts;
+global.Constants = require('./utils/constants');
 global.FinderObj = null;
 global.AmIOperational = false;
+global.UniqueId = Uuid(); // create a unique ID for this instance
+console.log('>>> Finder ' + global.UniqueId + ' reporting for duty!!!');
 
 Monitor.checkIn()
   .then(Monitor.init)
