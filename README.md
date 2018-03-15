@@ -1,5 +1,5 @@
 # Overview
-The goal of this application is to create the proof of concept for an autoscaling cluster of Node.js workers, managed by a Node.js controller, and backed by a Postgres data store. The intended use of this application is to find new information posted on sites like social media, news and online forums less than one minute after the content is posted, thus being almost real-time.
+The goal of this application is to create the proof of concept for an autoscaling cluster of Node.js workers, managed by a Node.js controller and backed by a Postgres data store. The intended use of this application is to find new information posted on sites like social media, news and online forums less than one minute after the content is posted, thus being almost real-time.
 
 The central idea is that JSON templates, which contains everythig necessary to find information on a site, are provided to the controller which assigns this work to available workers. As new work and/or new workers are added, the controller will automatically redistribute the work to workers.
 
