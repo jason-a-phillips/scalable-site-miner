@@ -77,7 +77,6 @@ function runFinderCheck() {
     })
     .then(() => {
       // Apportion finders if necessary
-      return apportionFinders(shouldRebalance);
       let finders = frOperational.concat(frRegistered);
 
       if (shouldRebalance && finders.length) {
