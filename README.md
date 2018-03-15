@@ -3,7 +3,7 @@ The goal of this application is to create the proof of concept for an autoscalin
 
 The central idea is that JSON templates, which contains everythig necessary to find information on a site, are provided to the controller which assigns this work to available workers. As new work and/or new workers are added, the controller will automatically redistribute the work to workers.
 
-The problem that this design addresses is that one Node.js worker service cannot discover new content from an unlimited number of sources and still maintain the 1-minute level of data freshness. HTTP responses and the subsequent requests for the more detailed meta data simply take too long, sometimes 10+ seconds to complete. To maintain one-minute freshness of our data and not have similar jobs collide, the work must be distributed to many workers. 
+The problem that this design addresses is that one Node.js worker service cannot mine new content from a large number (i.e., > 20) of sources and still maintain the one-minute level of data freshness. HTTP responses and the subsequent requests for the link's meta data simply take too long to complete, sometimes 10+ seconds. To maintain one-minute freshness of our data and not have similar jobs collide, the work must be distributed to many workers. 
 
 The application right now is a tightly-coupled cluster, due to the relationship between the Node.js services and the database. This will scale to the point where Postgres becomes the bottleneck. To increase scalability, we might insert an API in front of the database and scale the database with replication, document storage or NoSQL solutions, etc.
 
@@ -34,3 +34,5 @@ The Node.js services are designed to maximize Node's event-loop model and asynch
 2. Add features to clean up stale, useless data like disabled worker records.
 3. Add code to auto-grow worker services from within the Node.js controller itself.
 4. Containerize these services within Docker.
+5. Insert an API in front of the database.
+6. Create a simple React JS application to view the data in interesting ways.
