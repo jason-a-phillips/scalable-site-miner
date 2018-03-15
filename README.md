@@ -18,7 +18,7 @@ The application right now is a tightly-coupled cluster, due to the relationship 
 4. Start a worker in /worker with "node .".
 
 # Explanation of the application
-1. When you start the controller, the controller first looks for any workers that have registered themselves as being alive. 
+1. When you start the controller, it first looks for any workers that have registered themselves as being alive. 
 2. The controller checks their status and sets them to "active" if they just registered themselves and have no work assigned to them yet. 
 3. The controller will count how many active workers exist, compare it to the previous count and equally distribute jobs to each active worker. 
 4. When you start a worker (you can start as many workers as you like), it gives itself a unique identity and registers itself with the controller as being alive.
@@ -30,7 +30,7 @@ The application right now is a tightly-coupled cluster, due to the relationship 
 The Node.js services are designed to maximize Node's event-loop model and asynchronous "next tick" behavior. HTTP and database requests are always wrapped in Promises, batched and throttled using concurrency limits. As work grows, adding more workers should be a fairly painless task, until the database becomes the bottleneck.
 
 # To-do's
-1. Break up long large functions into smaller ones
+1. Refactor long large functions into smaller ones
 2. Add features to clean up stale, useless data like disabled worker records.
 3. Add code to auto-grow worker services from within the Node.js controller itself.
 4. Containerize these services within Docker.
