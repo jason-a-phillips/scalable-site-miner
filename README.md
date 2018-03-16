@@ -27,7 +27,7 @@ The application right now is a tightly-coupled cluster, due to the relationship 
 7. If the worker fails to check in, the controller will deactivate that worker and redistribute work to the active remaining workers.
 
 # Design
-The Node.js services are designed to maximize Node's event-loop model and asynchronous "next tick" behavior. HTTP and database requests are always wrapped in Promises, batched and throttled using concurrency limits. As work grows, adding more workers should be a fairly painless task, until the database becomes the bottleneck.
+The Node.js services are designed to maximize Node's event-loop model and asynchronous "next tick" behavior. HTTP and database requests are always wrapped in Promises, batched and throttled using concurrency limits. As work grows, adding more workers should be a trivial task, until the database becomes the bottleneck.
 
 # To-do's
 1. Refactor long large functions into smaller ones
