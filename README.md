@@ -12,7 +12,7 @@ The application right now is a tightly-coupled cluster, due to the relationship 
 * Node JS
 * Docker
 
-1. Start the Docker Postgres database container using the provided Docker commands. It uses port 5432, so make sure that doesn't conflict with Postgres that might be installed on your OS. Adjust the port number as needed in the application in the Docker run command and the two pg-connector.js connection objects.
+1. Start the Docker Postgres database container using the provided Docker commands. It uses port 5432, so make sure that doesn't conflict with Postgres that might be locally installed. Adjust the port number as needed in the application in the Docker run command and the two pg-connector.js connection objects.
 2. Insert a template for a job into the database. Use the dummy-data.sql file to insert a job that mines the Hacker News site.
 3. Start the controller service in /controller with "node .".
 4. Start worker(s) in /worker with "node .".
